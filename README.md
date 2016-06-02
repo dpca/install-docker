@@ -11,5 +11,5 @@ https://docs.docker.com/engine/installation/linux/ubuntulinux/
 ./install_docker.sh
 ```
 
-Optionally add `--install-compose` if you also want to install the latest
-docker-compose.
+Optionally add `--install-compose` if you also want to install docker-compose
+(v1.7.1)
