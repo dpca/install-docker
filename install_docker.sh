@@ -2,7 +2,7 @@
 
 # Instructions from https://docs.docker.com/engine/installation/linux/ubuntulinux/
 
-version=`lsb_release -rs`
+ubuntu=`lsb_release -rs`
 
 error() {
   echo "" >&2
@@ -12,13 +12,13 @@ error() {
 update_apt_sources() {
   apt-get update
   apt-get install -y apt-transport-https ca-certificates
-  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+  apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
-  case $version in
+  case $ubuntu in
     "14.04" ) entry="deb https://apt.dockerproject.org/repo ubuntu-trusty main";;
     "15.10" ) entry="deb https://apt.dockerproject.org/repo ubuntu-wily main";;
     "16.04" ) entry="deb https://apt.dockerproject.org/repo ubuntu-xenial main";;
-    * ) error "Ubuntu $version not recognized!"; exit 1;;
+    * ) error "Ubuntu $ubuntu not recognized!"; exit 1;;
 
   esac
 
@@ -28,11 +28,11 @@ update_apt_sources() {
 }
 
 install_prereqs() {
-  if [ "$version" == "14.04" ] || [ "$version" == "15.10" ] || [ "$version" == "16.04" ]; then
+  if [ "$ubuntu" == "14.04" ] || [ "$ubuntu" == "15.10" ] || [ "$ubuntu" == "16.04" ]; then
     apt-get update
-    apt-get install -y linux-image-extra-$(uname -r)
+    apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual
   fi
-  if [ "$version" == "14.04" ]; then
+  if [ "$ubuntu" == "14.04" ]; then
     apt-get install -y apparmor
   fi
 }
@@ -64,7 +64,7 @@ esac
 shift
 done
 
-if [ "$version" == "14.04" ] || [ "$version" == "15.10" ] || [ "$version" == "16.04" ]; then
+if [ "$ubuntu" == "14.04" ] || [ "$ubuntu" == "15.10" ] || [ "$ubuntu" == "16.04" ]; then
   update_apt_sources
   install_prereqs
   install_docker
@@ -72,6 +72,6 @@ if [ "$version" == "14.04" ] || [ "$version" == "15.10" ] || [ "$version" == "16
     install_compose
   fi
 else
-  error "Ubuntu $version not supported"
+  error "Ubuntu $ubuntu not supported"
   exit 1
 fi
